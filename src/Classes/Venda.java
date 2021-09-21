@@ -54,6 +54,6 @@ public class Venda {
 
   public void finalizarVenda() throws Qtd_Zero_Negativa_Exception {
       produtoVendido.setQtdEstoque(produtoVendido.getQtdEstoque() - qtdProdutoVendido);
-  }
+  } 
   
 }

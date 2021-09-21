@@ -27,29 +27,31 @@ public class Produto implements Comparable<Produto>{
     public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
+
     public String getNome() {
         return this.nome;
     }
     public void setNome(String nome) {
         this.nome = nome;
     }
+    
     public Double getValor() {
         return valor;
     }
-    public void setValor(Double valor) throws Qtd_Zero_Negativa_Exception{
+    public void setValor(Double valor) throws Qtd_Zero_Negativa_Exception {
         if(valor < 1) {
             throw new Qtd_Zero_Negativa_Exception();
         }
         this.valor = valor;
     }
+
     public int getQtdEstoque() {
         return qtdEstoque;
     }
-    public void setQtdEstoque(int qtdEstoque) throws Qtd_Zero_Negativa_Exception{
+    public void setQtdEstoque(Integer qtdEstoque) throws Qtd_Zero_Negativa_Exception {
         if(qtdEstoque < 0) {
             throw new Qtd_Zero_Negativa_Exception();
         }
-
         this.qtdEstoque = qtdEstoque;
     }
 

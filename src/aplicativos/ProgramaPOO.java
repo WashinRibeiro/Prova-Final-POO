@@ -21,21 +21,16 @@ import java.time.format.DateTimeParseException;
 
 public class ProgramaPOO {
     
-    //Formatador de Data padrão dd/mm/yyyy ( Dia/ Mês/ Ano - exemplo 19/09/2021 )
-    final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy"); //Formatador de Data padrão
     final static String padraoData = "\\d{2}/\\d{2}/\\d{4}";
 
     public static void main(String[] args) throws InterruptedException, IOException {
         int opcao, qtdCadastrados = 0;
-        int codigoProduto = 0;
-        //Array e List
+        
         ArrayList<Produto> produtos = new ArrayList<>();  //Lista de produtos cadastrados
         List<Venda> vendasRealizadas = new ArrayList<>(); //Lista de vendas cadastrados
         Scanner in = new Scanner(System.in);
 
-        
-
-            //Lista do MENU
         do {
             System.out.println("\n****\nMENU\n****\n");
             System.out.println("1 - Incluir produto");
@@ -50,24 +45,32 @@ public class ProgramaPOO {
             in.nextLine(); // Tira o ENTER que ficou na entrada na instrução anterior
 
 
-
+            //Cadastro do produto
             if (opcao == 1) {
-                //Cadastre seu produto aqui
+
                 System.out.println("-----------------------------------");
                 System.out.println("        CADASTRO DE PRODUTO      ");
                 System.out.println("-----------------------------------\n");
 
-                //Cadastrar nome do produto
+                //Cadastrar o nome do produto
+                String nome;
                 System.out.print("Nome do Produto: ");
-                String nome = in.nextLine();
+                nome = in.nextLine();
+                if (nome.equals("")) {
+                    System.out.println("O nome do produto não pode ser vazio...");
+                }
+ 
                 
                 //Cadastrar código do produto
                 System.out.print("Código do Produto: ");
                 Integer codigo = in.nextInt();
-                for (Produto i : produtos) {
-                    if (codigo.equals(getCodigo(i))) {
-                
-                   }
+                in.nextLine();
+
+                for (Produto prod : produtos) {
+                    if (codigo.equals(prod.getCodigo())) {
+                        System.out.printf("O código de entrada já está cadastrado no produto %s", prod.getNome());
+                        voltarMenu(in); 
+                    }
                 }
                  
                 //Cadastro Valor do Produto
@@ -88,27 +91,30 @@ public class ProgramaPOO {
                 produtos.add(new Produto(nome, codigo, valor, qtdEstoque));
 
                 //Cadastro finalizado.
+                qtdCadastrados++;
                 System.out.println("\nProduto cadastrado com sucesso !!!");
+                System.out.println("\nItens Cadastrados: " + qtdCadastrados);
                 voltarMenu(in);
 
 
 
             } else if (opcao == 2) {
 
+                // O método isEmpty() verifica se a string de entrada está vazia ou não
                 if (produtos.isEmpty()) {
                     System.out.println("\nNão há produtos cadastrados para exibir.");
                     voltarMenu(in);
                     continue;
                 }
+
                 System.out.print("\nDigite o Código do Produto: ");
+                Integer codBusca = in.nextInt();
+                in.nextLine();
 
-                 Integer CodBusca = in.nextInt();
-                 in.nextLine();
-
-                for (Produto p : produtos){
-                  if(CodBusca.equals(p.getCodigo())){
+                for (Produto prod : produtos){
+                  if(codBusca.equals(prod.getCodigo())){
                     System.out.println("\n------------------------------------------------------");
-                    System.out.printf("\nCódigo do produto: %d \nDescrição: %s \nValor unitário: R$ \nQuantidade em estoque: %d", p.getCodigo(), p.getNome(), p.getValor(), p.getQtdEstoque());
+                    System.out.printf("\nCódigo do produto: %d \nDescrição: %s \nValor unitário: R$ %2f \nQuantidade em estoque: %d", prod.getCodigo(), prod.getNome(), prod.getValor(), prod.getQtdEstoque());
                     System.out.println("\n------------------------------------------------------");
                     }
                 }    
@@ -118,19 +124,18 @@ public class ProgramaPOO {
              
               
             } else if (opcao == 3) {
-
-               // Se não tem ninguém cadastrado no vetor, caio fora
-              if (produtos.isEmpty()) {
-                 System.out.println("\nNão há produtos cadastrados para exibir.");
-                 voltarMenu(in);
-                 continue;
+                
+                if (produtos.isEmpty()) {
+                    System.out.println("\nNão há produtos cadastrados para exibir.");
+                    voltarMenu(in);
+                    continue;
                 }
 
 
                // Exiba os produtos aqui
-               System.out.println("###############################");
-               System.out.println("LISTAGEM DE PRODUTOS CADASTRADOS");
-               System.out.println("###############################");
+               System.out.println("---------------------------------------");
+               System.out.println("    LISTAGEM DE PRODUTOS CADASTRADOS   ");
+               System.out.println("---------------------------------------");
                System.out.println("Ordem de A - Z");
 
 
@@ -154,7 +159,6 @@ public class ProgramaPOO {
 
                  if(produto.getValor() > maior){
                    maior = produto.getValor();
-
                   }
                } 
               
@@ -199,9 +203,9 @@ public class ProgramaPOO {
 
 
                 //Resgitro de venda realizadas
-                System.out.println("###########################################");
+                System.out.println("-------------------------------------------");
                 System.out.println("       REGISTRO DE VENDAS REALIZADAS       ");
-                System.out.println("###########################################");
+                System.out.println("-------------------------------------------");
 
                 System.out.println("Determine o período que esta contido as vendas");
                 System.out.print("\nData incial [dd/mm/yyyy] (Digite ENTER para inserir a Data de Hoje): ");
@@ -385,7 +389,6 @@ public class ProgramaPOO {
 
                try {
                    novaVenda.finalizarVenda();
-
                    vendasRealizadas.add(novaVenda);
                    System.out.println("Produto vendido!");
                } catch(Qtd_Zero_Negativa_Exception ex) {
