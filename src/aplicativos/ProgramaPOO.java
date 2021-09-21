@@ -54,28 +54,46 @@ public class ProgramaPOO {
 
                 //Cadastrar o nome do produto
                 String nome;
-                System.out.print("Nome do Produto: ");
-                nome = in.nextLine();
-                if (nome.equals("")) {
-                    System.out.println("O nome do produto não pode ser vazio...");
-                }
- 
-                
-                //Cadastrar código do produto
-                System.out.print("Código do Produto: ");
-                Integer codigo = in.nextInt();
-                in.nextLine();
+                do {
+                    System.out.print("Nome do Produto: ");
+                    nome = in.nextLine();
+                    if (nome.equals("")){
+                        System.out.println("O nome do produto não pode ser vazio... Tente novamente");
+                    }  
+                } while (nome.equals(""));
 
-                for (Produto prod : produtos) {
-                    if (codigo.equals(prod.getCodigo())) {
-                        System.out.printf("O código de entrada já está cadastrado no produto %s", prod.getNome());
-                        voltarMenu(in); 
+
+                //Cadastrar código do produto
+                Integer codigo = null;
+                boolean codigocerto = false;
+                do {
+                    try {
+                    System.out.print("Código do Produto: ");
+                    codigo = in.nextInt();
+                    in.nextLine();
+
+                    // Verifica se já existe algum produto com este código, se sim, pede para digitar novamente
+                    if(CodigoRepetido(produtos, codigo)) {
+                        System.out.printf("Este codigo ja pertence ao produto %s. Por favor, digite novamente !!");
+                        System.out.print("\nCodigo: ");
+                        continue;
                     }
-                }
-                 
+
+                    codigocerto = true;
+
+                    } catch (InputMismatchException e) {
+                        System.out.println("Por favor, digite apenas números!!");
+                        in.nextLine();
+                    }
+
+                } while(codigocerto == false);
+                
+
                 //Cadastro Valor do Produto
                 System.out.print("Valor do Produto R$: ");
                 double valor = in.nextDouble();
+
+
 
                 //Cadastro Quantidade em Estoque do Produto
                 System.out.print("Quantidade em Estoque do Produto: ");
@@ -87,7 +105,7 @@ public class ProgramaPOO {
                  in.nextLine();
                 } 
                 
-                //Colocando todos os "valores" passados para a lista a partir de um método construtor
+                //Passando os "valores" preenchidos anteriormente para a lista produtos a partir de um método construtor
                 produtos.add(new Produto(nome, codigo, valor, qtdEstoque));
 
                 //Cadastro finalizado.
@@ -502,10 +520,15 @@ public class ProgramaPOO {
 
     }
 
+    private static boolean CodigoRepetido(List<Produto> produtosCadastrados, int codigo) {
 
+        for (Produto p : produtosCadastrados) {
+            if(p.getCodigo() == codigo) {
+                return true;
+            }
+        }
 
-
-
-
+        return false;
+    }
 
 }
