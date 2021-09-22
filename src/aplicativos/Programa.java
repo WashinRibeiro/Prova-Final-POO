@@ -19,13 +19,14 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 
-public class ProgramaPOO {
+public class Programa {
     
     final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy"); //Formatador de Data padrão
     final static String padraoData = "\\d{2}/\\d{2}/\\d{4}";
 
     public static void main(String[] args) throws InterruptedException, IOException {
-        int opcao, qtdCadastrados = 0;
+        int opcao = 0;
+        int qtdCadastrados = 0;
         
         ArrayList<Produto> produtos = new ArrayList<>();  //Lista de produtos cadastrados
         List<Venda> vendasRealizadas = new ArrayList<>(); //Lista de vendas cadastrados
@@ -45,6 +46,15 @@ public class ProgramaPOO {
             in.nextLine(); // Tira o ENTER que ficou na entrada na instrução anterior
 
 
+
+
+
+
+
+
+
+
+
             //Cadastro do produto
             if (opcao == 1) {
 
@@ -62,7 +72,6 @@ public class ProgramaPOO {
                     }  
                 } while (nome.equals(""));
 
-
                 //Cadastrar código do produto
                 Integer codigo = null;
                 boolean codigocerto = false;
@@ -73,9 +82,8 @@ public class ProgramaPOO {
                     in.nextLine();
 
                     // Verifica se já existe algum produto com este código, se sim, pede para digitar novamente
-                    if(CodigoRepetido(produtos, codigo)) {
-                        System.out.printf("Este codigo ja pertence ao produto %s. Por favor, digite novamente !!");
-                        System.out.print("\nCodigo: ");
+                    if(BuscaCodigo(produtos, codigo)) {
+                        System.out.print("Este codigo ja pertence a um produto. Por favor, digite novamente !!");
                         continue;
                     }
 
@@ -92,7 +100,6 @@ public class ProgramaPOO {
                 //Cadastro Valor do Produto
                 System.out.print("Valor do Produto R$: ");
                 double valor = in.nextDouble();
-
 
 
                 //Cadastro Quantidade em Estoque do Produto
@@ -115,6 +122,19 @@ public class ProgramaPOO {
                 voltarMenu(in);
 
 
+    
+
+
+
+
+
+
+
+
+
+
+
+
 
             } else if (opcao == 2) {
 
@@ -125,24 +145,54 @@ public class ProgramaPOO {
                     continue;
                 }
 
-                System.out.print("\nDigite o Código do Produto: ");
+                System.out.print("\nDigite o código do produto: ");
                 Integer codBusca = in.nextInt();
                 in.nextLine();
 
-                for (Produto prod : produtos){
-                  if(codBusca.equals(prod.getCodigo())){
+                
+
+                Produto prod;
+                if(BuscaCodigo(produtos, codBusca)) {
                     System.out.println("\n------------------------------------------------------");
-                    System.out.printf("\nCódigo do produto: %d \nDescrição: %s \nValor unitário: R$ %2f \nQuantidade em estoque: %d", prod.getCodigo(), prod.getNome(), prod.getValor(), prod.getQtdEstoque());
+                    System.out.printf("\nCódigo do produto: %d \nDescrição: %s \nValor unitário: R$ %.2f \nQuantidade em estoque: %d", prod.getCodigo(), prod.getNome(), prod.getValor(), prod.getQtdEstoque());
                     System.out.println("\n------------------------------------------------------");
+                }
+
+
+                /* for (Produto prod : produtos) {
+                    if(prod.getCodigo() == codBusca) {
+                        System.out.println("\n------------------------------------------------------");
+                        System.out.printf("\nCódigo do produto: %d \nDescrição: %s \nValor unitário: R$ %.2f \nQuantidade em estoque: %d", prod.getCodigo(), prod.getNome(), prod.getValor(), prod.getQtdEstoque());
+                        System.out.println("\n------------------------------------------------------");
                     }
-                }    
-         
-                 voltarMenu(in);
+                } */
+
+                if(BuscaCodigo(produtos, codBusca)) {
+                    
+
+                voltarMenu(in);
+                
+                
+
+                
                   
              
-              
+
+
+
+
+
+
+
+
+
+
+
+
+            // Listagem de Produtos
             } else if (opcao == 3) {
                 
+                //Método que verifica se uma String está ou não vazia
                 if (produtos.isEmpty()) {
                     System.out.println("\nNão há produtos cadastrados para exibir.");
                     voltarMenu(in);
@@ -150,68 +200,77 @@ public class ProgramaPOO {
                 }
 
 
-               // Exiba os produtos aqui
-               System.out.println("---------------------------------------");
-               System.out.println("    LISTAGEM DE PRODUTOS CADASTRADOS   ");
-               System.out.println("---------------------------------------");
-               System.out.println("Ordem de A - Z");
+                // Exiba os produtos aqui
+                System.out.println("---------------------------------------");
+                System.out.println("    LISTAGEM DE PRODUTOS CADASTRADOS   ");
+                System.out.println("---------------------------------------");
 
-
-               Double soma = 0.0;
-               Double maior = 0.0;
-               int somaQTDEstoque = 0;
+                Double soma = 0.0;
+                Double maior = 0.0;
+                int somaQTDEstoque = 0;
                
-               //Ordenação sort por código
-               produtos.sort(null);
+                //Ordenar por código
+                produtos.sort(null);
+ 
+                for (Produto p : produtos){
+                    System.out.println("\n------------------------------------------------------");
+                    System.out.println("Código do produto:  " + p.getCodigo() +"\nDescrição:  " +  p.getNome());
+                    System.out.println("Valor unitário: R$" + p.getValor() + " " + "\nQuantidade em estoque: " + p.getQtdEstoque());
+                    System.out.println("\n------------------------------------------------------");
 
-               for (Produto produto : produtos){
-                
-                 System.out.println("\n------------------------------------------------------");
-                 System.out.println("Código do produto:  " + produto.getCodigo() +"\nDescrição:  " +  produto.getNome());
-                 System.out.println("Valor unitário: R$" + produto.getValor() + " " + "\nQuantidade em estoque: " + produto.getQtdEstoque());
-                 System.out.println("\n------------------------------------------------------");
+                    //Calculo para MEDIA
+                    soma = soma + (p.getValor() * p.getQtdEstoque());
+                    somaQTDEstoque = somaQTDEstoque + p.getQtdEstoque();
 
-                 //Calculo para MEDIA
-                 soma = soma + (produto.getValor() * produto.getQtdEstoque());
-                 somaQTDEstoque = somaQTDEstoque + produto.getQtdEstoque();
-
-                 if(produto.getValor() > maior){
-                   maior = produto.getValor();
-                  }
-               } 
+                    if(p.getValor() > maior){
+                        maior = p.getValor();
+                    }
+                } 
               
 
-               //For para MENOR
-               //Menor recebe valor de maior, para procurar um valor MAIOR do que MAIOR que foi definido.
-               Double menor = maior;
+                //For para MENOR
+                //Menor recebe valor de maior, para procurar um valor MAIOR do que MAIOR que foi definido.
+                Double menor = maior;
               
-              for (Produto produto : produtos) {
-                //Double menor = maior;
-                if(produto.getValor() < menor){
-                  menor = produto.getValor();
+                for (Produto produto : produtos) {
 
+                    if(produto.getValor() < menor){
+                        menor = produto.getValor();
+                    }
                 }
-              }
 
 
-              //Mostra a quantidade cadastrada
-              System.out.println("\nTotal de " + produtos.size() + " produtos cadastrados ");
+                //Mostra a quantidade cadastrada
+                System.out.println("\nTotal de " + produtos.size() + " produtos cadastrados ");
               
-              //Mostra a quantidade de produtos em estoque
-              System.out.println("Quantidade em estoque é de: " + somaQTDEstoque + " produtos");
+                //Mostra a quantidade de produtos em estoque
+                System.out.println("Quantidade em estoque é de: " + somaQTDEstoque + " produtos");
+                System.out.println("\nValor médio em estoque é: " + soma / somaQTDEstoque);
+                System.out.println("\nO produto de MENOR valor cadastrado é de: R$" + maior);
+                System.out.println("\nO produto de MAIOR valor cadastrado é de: R$" + menor);
+                
 
-              System.out.println("\nValor médio em estoque é: " + soma / somaQTDEstoque);
-
-              System.out.println("\nO produto de MENOR valor cadastrado é de: R$" + maior);
-
-              System.out.println("\nO produto de MAIOR valor cadastrado é de: R$" + menor);
-            
-
-             voltarMenu(in);
+                voltarMenu(in);
 
 
 
-            }else if (opcao == 4) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            } else if (opcao == 4) {
 
                 if (vendasRealizadas.isEmpty()) {
                     System.out.println("\nNão há vendas realizadas para exibir.");
@@ -241,7 +300,6 @@ public class ProgramaPOO {
                             continue;
                         }
                         dataInicial = LocalDate.parse(data, formatter);
-
                         verificador = true;
 
                     } catch(DateTimeParseException ex)  {
@@ -285,11 +343,30 @@ public class ProgramaPOO {
 
                 RelatorioVendas(vendasRealizadas, dataInicial, dataFinal);
                 
-
                 System.out.println("\n\nPressioner ENTER para Sair...");
                 in.nextLine();
                 voltarMenu(in);
                 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                 
             } else if (opcao == 5) {
@@ -300,14 +377,12 @@ public class ProgramaPOO {
                     continue;
                 }
 
-
                //Resgitro de venda dos produtos
-               System.out.println("###############################");
-               System.out.println("       REGISTRO DE VENDA       ");
-               System.out.println("###############################");
+               System.out.println("------------------------------------");
+               System.out.println("         REGISTRO DE VENDA          ");
+               System.out.println("------------------------------------");
               
                System.out.println("Voltar ao MENU, digite um caractere alfabético\n");
-
                System.out.println("Digite o código do Produto: ");
 
                
@@ -418,16 +493,30 @@ public class ProgramaPOO {
                in.nextLine();
                voltarMenu(in);
 
-            }
-            else if (opcao != 0) {
+            } else if (opcao != 0) {
                 System.out.println("\n**Opção inválida!**");
             }
+
         } while (opcao != 0);
 
         System.out.println("Fim do programa!");
+        in.close();   
+    } 
 
-        in.close();
-    }
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     //Voltar para o MENU
@@ -444,6 +533,7 @@ public class ProgramaPOO {
         System.out.flush();
     }
 
+    
     
     // Comando para limpar tela
     private static void cls() throws IOException, InterruptedException {
@@ -520,10 +610,15 @@ public class ProgramaPOO {
 
     }
 
-    private static boolean CodigoRepetido(List<Produto> produtosCadastrados, int codigo) {
 
-        for (Produto p : produtosCadastrados) {
-            if(p.getCodigo() == codigo) {
+    /*
+        Função que procura se na lista já existe algum produto com o mesmo código.
+        Se possuir, não permite cadastrar o produto 
+    */
+    private static boolean BuscaCodigo(List<Produto> produtos, int codigo) {
+
+        for (Produto prod : produtos) {
+            if(prod.getCodigo() == codigo) {
                 return true;
             }
         }

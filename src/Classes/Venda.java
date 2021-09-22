@@ -1,7 +1,6 @@
 package Classes;
 
 import java.time.LocalDate;
-import Classes.Produto;
 import Dados.Qtd_Zero_Negativa_Exception; 
 import Dados.DataInvalida_Exception; 
 
