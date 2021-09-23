@@ -17,6 +17,7 @@ em estoque.
 
 A estrutura mínima de menus/funcionalidades que o aplicativo deve ter é a
 seguinte:
+
 1 – Incluir produto
 2 – Consultar produto
 3 – Listagem de produtos
