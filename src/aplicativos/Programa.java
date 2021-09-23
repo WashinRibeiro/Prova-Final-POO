@@ -1,21 +1,19 @@
 package aplicativos;
 
-//Import java.Util
 import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+import java.util.zip.DataFormatException;
 
 import Classes.*;
 import Dados.*;
 
-// Import Array
 import java.util.ArrayList;
 import java.util.DoubleSummaryStatistics;
 import java.util.List;
 
-//Import para Datas
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -202,10 +200,13 @@ public class Programa {
                 System.out.println("-------------------------------------------");
 
                 System.out.println("Determine o período que esta contido as vendas");
-                System.out.print("\nData incial [dd/mm/yyyy] (Digite ENTER para inserir a Data de Hoje): ");
+                System.out.println("Data incial [dd/mm/yyyy] (Digite ENTER para inserir a Data de Hoje): ");
+
+
+                // INICIAL
 
                 LocalDate dataInicial = LocalDate.parse("2000-01-01");
-                boolean verificador = false;
+                boolean verificadorInicial = false;
                 do {
                     try {
 
@@ -213,11 +214,11 @@ public class Programa {
                         if (data.equals("")) {
                             String formatoPadrao = LocalDate.now().format(formatter);
                             dataInicial = LocalDate.parse(formatoPadrao, formatter);
-                            verificador = true;
+                            verificadorInicial = true;
                             continue;
                         }
                         dataInicial = LocalDate.parse(data, formatter);
-                        verificador = true;
+                        verificadorInicial = true;
 
                     } catch (DateTimeParseException ex) {
                         System.out.println(
@@ -225,25 +226,29 @@ public class Programa {
                         System.out.print("\nData Inicial [dd/mm/yyyy]: ");
                     }
 
-                } while (!verificador);
+                } while (!verificadorInicial);
 
                 System.out.print("\nData Final [dd/mm/yyyy] ((Digite ENTER para inserir a Data de Hoje): ");
 
-                verificador = false;
-                LocalDate dataFinal = LocalDate.parse("2000-01-01"); // Atribuição inicial para evitar erros de
-                                                                     // compilação
+
+
+                // FINAL
+
+                LocalDate dataFinal = LocalDate.parse("2000-01-01"); // Atribuição inicial para evitar erros de compilação
+                boolean verificadorFinal = false;
+
                 do {
                     try {
                         String data = in.nextLine(); // Para recolher o ENTER caso deseja a data de hoje
                         if (data.equals("")) {
                             String formatoPadrao = LocalDate.now().format(formatter);
                             dataFinal = LocalDate.parse(formatoPadrao, formatter);
-                            verificador = true;
+                            verificadorFinal = true;
                             continue;
                         }
 
                         // Verificação para impedir que a data final se antes da data inicial
-                        if (dataInicial.isAfter(dataFinal)) {
+                        if (dataFinal.isAfter(dataInicial)) {
                             System.out.println("A data Final nao pode ser antes da INICIAL");
                             System.out.print("\nData Final [dd/mm/yyyy]: ");
                             continue;
@@ -251,7 +256,7 @@ public class Programa {
 
                         dataFinal = LocalDate.parse(data, formatter);
 
-                        verificador = true;
+                        verificadorFinal = true;
 
                     } catch (DateTimeParseException ex) {
                         System.out.println(
@@ -259,13 +264,14 @@ public class Programa {
                         System.out.print("\nData Final [dd/mm/yyyy]: ");
                     }
 
-                } while (!verificador);
+                } while (!verificadorFinal);
 
                 RelatorioVendas(vendasRealizadas, dataInicial, dataFinal);
 
                 System.out.println("\n\nPressioner ENTER para Sair...");
                 in.nextLine();
                 voltarMenu(in);
+
 
             } else if (opcao == 5) {
 
