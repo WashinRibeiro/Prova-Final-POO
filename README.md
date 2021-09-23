@@ -18,9 +18,9 @@ em estoque.
 A estrutura mínima de menus/funcionalidades que o aplicativo deve ter é a
 seguinte:
 
-1 – Incluir produto
-2 – Consultar produto
-3 – Listagem de produtos
-4 – Vendas por período – detalhado
-5 – Realizar venda
-0 – Sair
+- 1 – Incluir produto
+- 2 – Consultar produto
+- 3 – Listagem de produtos
+- 4 – Vendas por período – detalhado
+- 5 – Realizar venda
+- 0 – Sair
