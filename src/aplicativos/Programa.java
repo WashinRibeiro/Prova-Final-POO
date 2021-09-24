@@ -52,6 +52,7 @@ public class Programa {
 
                 // Cadastrar o nome do produto
                 String nome;
+                
                 do {
                     System.out.print("Nome do Produto: ");
                     nome = in.nextLine();
