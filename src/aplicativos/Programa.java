@@ -5,7 +5,6 @@ import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.stream.Collectors;
-import java.util.zip.DataFormatException;
 
 import Classes.*;
 import Dados.*;
@@ -200,7 +199,7 @@ public class Programa {
                 System.out.println("-------------------------------------------");
 
                 System.out.println("Determine o período que esta contido as vendas");
-                System.out.println("Data incial [dd/mm/yyyy] (Digite ENTER para inserir a Data de Hoje): ");
+                System.out.print("Data inicial [dd/mm/yyyy] (Digite ENTER para inserir a Data de Hoje): ");
 
 
                 // INICIAL
@@ -217,12 +216,12 @@ public class Programa {
                             verificadorInicial = true;
                             continue;
                         }
+
                         dataInicial = LocalDate.parse(data, formatter);
                         verificadorInicial = true;
 
-                    } catch (DateTimeParseException ex) {
-                        System.out.println(
-                                "\nDigite a data no padrão informado ou Pressione ENTER para colocar a data Hoje !!");
+                    } catch (DateTimeParseException e) {
+                        System.out.println("\nDigite a data no padrão informado ou Pressione ENTER para colocar a data Hoje !!");
                         System.out.print("\nData Inicial [dd/mm/yyyy]: ");
                     }
 
@@ -259,8 +258,7 @@ public class Programa {
                         verificadorFinal = true;
 
                     } catch (DateTimeParseException ex) {
-                        System.out.println(
-                                "\nDigite a data no padrão informado ou Pressione ENTER para colocar a data de Hoje");
+                        System.out.println("\nDigite a data no padrão informado ou Pressione ENTER para colocar a data de Hoje");
                         System.out.print("\nData Final [dd/mm/yyyy]: ");
                     }
 
@@ -287,7 +285,6 @@ public class Programa {
                 System.out.println("------------------------------------");
 
                 System.out.println("Voltar ao MENU, digite um caractere alfabético\n");
-                System.out.println("Digite o código do Produto: ");
 
                 String verificacaoEntrada = "";
                 boolean verificador = false;
@@ -295,7 +292,9 @@ public class Programa {
 
                 do {
                     try {
+                        System.out.print("Digite o código do Produto: ");
                         verificacaoEntrada = in.nextLine();
+
                         if (!verificacaoEntrada.matches("[0-9]*") || verificacaoEntrada.equals("")) {
                             break;
                         }
@@ -308,9 +307,6 @@ public class Programa {
                         verificador = true;
                     } catch (NoSuchElementException ex) {
                         System.out.println("\nNao foi encontrado nenhum produto com o Codigo fornecido");
-                        System.out.println("Digite Novamente um código válido");
-                        System.out.print("\nCodigo: ");
-
                     }
 
                 } while (!verificador);
@@ -386,8 +382,8 @@ public class Programa {
                     System.out.println("Não foi possível realizar a venda!");
                 }
 
-                System.out.println("\nPressioner ENTER para continuar...");
-                in.nextLine();
+                /* System.out.println("\nPressioner ENTER para continuar...");
+                in.nextLine(); */
                 voltarMenu(in);
 
             } else if (opcao != 0) {
@@ -448,15 +444,14 @@ public class Programa {
 
             System.out.println();
 
-            // System.out.printf para Relatorio de Vendas
             System.out.println("\n------------------------------------------------------");
 
-            System.out.format(venda.getData().format(formatter).toString()); // Pega o valor unitário do produto
+            System.out.format(venda.getData().format(formatter).toString());
 
-            System.out.printf("\n Produto: " + venda.getProdutoVendido().getNome()); // Nome do Produto
-            System.out.printf("\n Quantidade vendida: " + venda.getQtdProdutoVendido()); // Quantidade vendida
-            System.out.printf("\n Valor unitário: R$" + venda.getProdutoVendido().getValor()); // Valor Unitário
-            System.out.println("\n------------------------------------------------------");
+            System.out.printf("Produto: " + venda.getProdutoVendido().getNome());
+            System.out.printf("Quantidade vendida: " + venda.getQtdProdutoVendido()); 
+            System.out.printf("Valor unitário: R$" + venda.getProdutoVendido().getValor());
+            System.out.println("------------------------------------------------------");
 
             // Somar valores de vendas TOTAL
             valorTotal += venda.getQtdProdutoVendido() * venda.getProdutoVendido().getValor();
